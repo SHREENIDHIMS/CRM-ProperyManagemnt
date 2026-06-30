@@ -1,0 +1,37 @@
+flowchart TD
+    A[Website Inquiry] --> B[Lead Created - Leasing Agent]
+    B --> C[Schedule Showing]
+    C --> D[Application Submitted]
+    D --> E[Automated Screening: Credit / Background / Eviction]
+    E -->|Rejected| Z[Notify Applicant - End]
+    E -->|Approved| F[Lease Generation - E-Sign]
+    F --> G[Move-In Inspection - Geo-tagged Photos]
+    G --> H[Tenant Portal Activated]
+
+    H --> I[Rent Due]
+    I --> J[Rent Collection - ACH / Card / Cash]
+    J --> K{On Time?}
+    K -->|No| L[Late Fee Automation]
+    K -->|Yes| M[Trust Ledger Updated]
+    L --> M
+
+    H --> N[Tenant Submits Maintenance Request]
+    N --> O[Smart Dispatch - Proximity / Trade / Availability]
+    O --> P[Maintenance Tech Completes Work Order]
+    P --> Q{External Vendor Needed?}
+    Q -->|Yes| R[Vendor Invoice + COI Submitted]
+    Q -->|No| S[Job Closed]
+    R --> T{Cost Over Threshold?}
+    T -->|Yes| U[Sub-Admin Approval Required]
+    T -->|No| S
+    U --> S
+    S --> M
+
+    M --> V[Owner Distribution Processed]
+    V --> W[Financial Reporting / Auditor Export]
+
+    H --> X{Lease Nearing Expiry?}
+    X -->|Renew| F
+    X -->|Vacate| Y[Move-Out Inspection]
+    Y --> AA[Security Deposit Reconciliation]
+    AA --> M

@@ -1,0 +1,122 @@
+classDiagram
+    direction TB
+
+    class SuperAdmin {
+        +manageGlobalConfig()
+        +manageBillingSubscriptions()
+        +manageWhiteLabeling()
+        +viewAllTenantSchemas()
+        +accessGlobalAuditLogs()
+        +managePaymentGateways()
+        +createSubAdmins()
+    }
+
+    class SubAdmin {
+        +manageBranchSettings()
+        +provisionSuspendUsers()
+        +assignRolesLocally()
+        +approveLargeExpenses()
+        +viewRegionalReports()
+        +escalateComplianceIssues()
+    }
+
+    class PropertyManager {
+        +manageAssignedPortfolios()
+        +tenantCommunication()
+        +approveLeaseTerms()
+        +approveMaintenanceUnderThreshold()
+        +viewFinancialsMasked()
+    }
+
+    class LeasingAgent {
+        +manageLeadPipeline()
+        +scheduleShowings()
+        +processApplications()
+        +initiateScreening()
+        +syndicateListings()
+    }
+
+    class MaintenanceSupervisor {
+        +triageIncomingRequests()
+        +assignTechsAndContractors()
+        +managePreventiveSchedule()
+        +approveJobCompletion()
+        +escalateSLABreaches()
+    }
+
+    class MaintenanceTech {
+        +viewAssignedWorkOrders()
+        +uploadJobPhotos()
+        +updateJobStatus()
+    }
+
+    class ComplianceOfficer {
+        +monitorFairHousingCompliance()
+        +auditScreeningCriteria()
+        +reviewLeaseLegalLanguage()
+        +trackTrustAccountingRules()
+        +flagPolicyViolations()
+    }
+
+    class ControllerFinanceManager {
+        +approveOwnerDistributions()
+        +signOffGeneralLedger()
+        +setLateFeeRules()
+        +approveLargeVendorPayouts()
+    }
+
+    class Bookkeeper {
+        +recordRentTransactions()
+        +reconcileBankAccounts()
+        +maintainSplitTrustLedger()
+        +processVendorInvoices()
+        +prepareOwnerStatements()
+    }
+
+    class OwnerInvestor {
+        +viewPortfolioPerformance()
+        +approveCapexRequests()
+        +viewDistributionStatements()
+    }
+
+    class Auditor {
+        +viewFinancialStatementsReadOnly()
+        +exportTaxForms()
+        +viewComplianceLogsReadOnly()
+    }
+
+    class VendorCompany {
+        +viewAssignedJobs()
+        +submitCertificateOfInsurance()
+        +submitInvoices()
+        +receiveYearEnd1099()
+    }
+
+    class Contractor {
+        +viewOwnJobOnly()
+        +uploadCompletionPhotos()
+        +updateOwnJobStatus()
+    }
+
+    class Tenant {
+        +submitMaintenanceRequest()
+        +payRentOnline()
+        +viewLeaseDocuments()
+        +viewOwnUnitDataOnly()
+    }
+
+    SuperAdmin "1" --> "0..*" SubAdmin : provisions
+    SubAdmin "1" --> "0..*" PropertyManager : oversees
+    SubAdmin "1" --> "0..1" ComplianceOfficer : escalates to
+    SubAdmin "1" --> "0..1" ControllerFinanceManager : approves with
+    PropertyManager "1" o-- "0..*" LeasingAgent : manages
+    PropertyManager "1" o-- "0..*" MaintenanceSupervisor : assigns priority to
+    PropertyManager "1" --> "0..*" Tenant : communicates with
+    MaintenanceSupervisor "1" *-- "0..*" MaintenanceTech : assigns
+    MaintenanceSupervisor "1" --> "0..*" Contractor : assigns
+    VendorCompany "1" *-- "0..*" Contractor : employs
+    ControllerFinanceManager "1" o-- "0..*" Bookkeeper : oversees
+    Bookkeeper "1" --> "0..*" OwnerInvestor : prepares statements for
+    Auditor "1" ..> "0..*" Bookkeeper : reviews
+    ComplianceOfficer "1" ..> "0..*" LeasingAgent : audits
+    ComplianceOfficer "1" ..> "0..*" Bookkeeper : audits

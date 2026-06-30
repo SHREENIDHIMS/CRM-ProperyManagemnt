@@ -1,0 +1,129 @@
+classDiagram
+    class SuperAdmin {
+        +ManageGlobalConfig()
+        +ManageBilling_Subscriptions()
+        +ManageWhiteLabeling()
+        +ViewAllTenantSchemas()
+        +AccessGlobalUnalterableAuditLogs()
+        +ManagePaymentGateways()
+        +CreateSubAdmins()
+    }
+
+    class SubAdmin {
+        +ManageBranchRegionSettings()
+        +ProvisionSuspendUsers()
+        +AssignRolesLocally()
+        +ApproveLargeExpensesOverThreshold()
+        +ViewRegionalReports()
+        +EscalateComplianceIssues()
+    }
+
+    class PropertyManager {
+        +ManageAssignedPortfolios()
+        +TenantCommunication()
+        +ApproveLeaseTerms()
+        +ApproveMaintenanceUnderThreshold()
+        +ViewFinancials_Masked()
+        +SupervisePM_Team()
+    }
+
+    class LeasingAgent {
+        +ManageLeadPipeline()
+        +ScheduleShowings()
+        +ProcessRentalApplications()
+        +InitiateScreening()
+        +SyndicateListings()
+    }
+
+    class MaintenanceSupervisor {
+        +TriageIncomingRequests()
+        +AssignTechsAndContractors()
+        +ManagePreventiveMaintenanceSchedule()
+        +ApproveJobCompletion()
+        +EscalateSLABreaches()
+    }
+
+    class MaintenanceTech {
+        +ViewAssignedWorkOrdersOnly()
+        +UploadJobPhotos()
+        +UpdateJobStatus()
+        +NoFinancialAccess()
+        +NoTenantPIIAccess()
+    }
+
+    class ComplianceOfficer {
+        +MonitorFairHousingCompliance()
+        +AuditScreeningCriteria()
+        +ReviewLeaseLegalLanguage()
+        +TrackStateTrustAccountingRules()
+        +FlagPolicyViolations()
+    }
+
+    class ControllerFinanceManager {
+        +ApproveOwnerDistributions()
+        +SignOffGeneralLedger()
+        +SetLateFeeRules()
+        +ApproveLargeVendorPayouts()
+        +ReviewTrustLedgerHealth()
+    }
+
+    class Bookkeeper {
+        +RecordRentTransactions()
+        +ReconcileBankAccounts()
+        +MaintainSplitTrustLedger()
+        +ProcessVendorInvoices()
+        +PrepareOwnerStatements()
+    }
+
+    class OwnerInvestor {
+        +ViewPortfolioPerformance()
+        +ApproveCapexRequests()
+        +ViewDistributionStatements()
+        +MessagePropertyManager()
+    }
+
+    class Auditor {
+        +ViewFinancialStatements_ReadOnly()
+        +ExportTaxForms()
+        +ViewComplianceLogs_ReadOnly()
+        +NoEditRights()
+    }
+
+    class VendorCompany {
+        +ViewAssignedJobsOnly()
+        +SubmitCertificateOfInsurance()
+        +SubmitInvoices()
+        +ReceiveYearEnd1099()
+        +AssignContractors()
+    }
+
+    class Contractor {
+        +ViewOwnJobOnly()
+        +UploadCompletionPhotos()
+        +UpdateOwnJobStatus()
+        +NoPortalLogin_OptionalLiteAccess()
+    }
+
+    class Tenant {
+        +SubmitMaintenanceRequest()
+        +PayRentOnline()
+        +ViewLeaseDocuments()
+        +ViewOwnUnitDataOnly()
+        +SubmitMoveInOutAcknowledgement()
+    }
+
+    SuperAdmin --> SubAdmin : provisions
+    SubAdmin --> PropertyManager : oversees
+    SubAdmin --> ComplianceOfficer : escalates to
+    SubAdmin --> ControllerFinanceManager : approves thresholds with
+    PropertyManager --> LeasingAgent : manages
+    PropertyManager --> MaintenanceSupervisor : assigns priorities to
+    PropertyManager --> Tenant : communicates with
+    MaintenanceSupervisor --> MaintenanceTech : assigns jobs to
+    MaintenanceSupervisor --> Contractor : assigns jobs to
+    VendorCompany --> Contractor : employs
+    ControllerFinanceManager --> Bookkeeper : oversees
+    Bookkeeper --> OwnerInvestor : prepares statements for
+    Auditor ..> Bookkeeper : reviews records of
+    ComplianceOfficer ..> LeasingAgent : audits screening of
+    ComplianceOfficer ..> Bookkeeper : audits trust ledger of
