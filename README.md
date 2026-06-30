@@ -1,640 +1,347 @@
-# CRM-ProperyManagemnt
+# Property Management CRM
+## Business Requirements Document (Planning Phase)
 
-Super Admin Pages:
+---
 
-🏠 Dashboard
-Total Companies
-Total Users
-Total Properties
-Revenue Overview
-Active Subscriptions
-Recent Activities
-System Alerts
+## Project Status
 
-🏢 Companies:
+| Item | Status |
+|------|--------|
+| Product Type | Internal Single-Company CRM |
+| Phase | Planning — not yet in development |
+| Multi-Tenant / SaaS | No |
+| Tech Stack | Not yet decided |
+| Last Updated | Planning Phase |
 
-View Companies
-Add Company
-Edit Company
-Suspend/Activate Company
-Company Details
-Company Statistics
+> All diagrams and documents in this repository are technology-agnostic. No framework, database, or hosting decisions have been made. This document will be updated as planning progresses.
 
-👥 User Management:
+---
 
-View Users
-Add Users
-Edit Users
-Assign Roles
-Reset Password
-Suspend Users
+## Product Vision
 
-💳 Subscription & Billing:
+A Property Management CRM that serves two groups with conflicting priorities simultaneously.
 
-Subscription Plans
-Active Subscriptions
-Renewals
-Payments
-Invoices
+**Field Operations** — Property Managers, Leasing Agents, Maintenance Techs — need speed, mobility, and automation while working on-site.
 
-📊 Reports & Analytics:
+**Management & Finance** — Super Admin, Controller, Compliance Officer, Auditor — need strict access control, role-based data isolation, and an immutable audit trail.
 
-Revenue Reports
-Company Reports
-User Reports
-Growth Reports
-Platform Usage
+Every feature in this system must serve at least one of these two groups. Features that serve neither are out of scope.
 
-🛡 Security:
+---
 
-Login Activity
-Audit Logs
-Active Sessions
-Security Alerts
+## Organization Structure
 
-🎫 Support:
+Everything in this system depends on the organizational hierarchy. This is Module 0.
 
-Support Tickets
-Announcements
-Notifications
-
-⚙ Platform Settings:
-
-General Settings
-Feature Management
-Storage Usage
-Integrations
-
-👤 Profile:
-
-My Profile
-Change Password
-Notification Settings
-Logout
-Quick Sidebar Menu
-
-🏠 Dashboard
-
-🏢 Companies
-
-👥 Users
-
-💳 Subscriptions
-
-📊 Reports
-
-🛡 Security
-
-🎫 Support
-
-⚙ Settings
-
-👤 Profile
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Super Admin Portal
-
-The Super Admin should have 12–15 major workspaces, each containing multiple pages.
-
-1. Dashboard (Mission Control)
-
-This is the homepage.
-
-KPI Cards
-Total Companies
-Active Companies
-Trial Companies
-Suspended Companies
-Total Users
-Total Properties
-Total Units
-Total Tenants
-Total Revenue
-Monthly Recurring Revenue (MRR)
-Annual Recurring Revenue (ARR)
-Active Sessions
-Support Tickets
-System Health
-Storage Usage
-Revenue Overview
-Today's Revenue
-This Week
-This Month
-This Year
-Subscription Revenue
-Renewal Revenue
-Refunds
-Failed Payments
-Company Overview
-New Companies
-Most Active Companies
-Companies Near Subscription Expiry
-Companies Exceeding Limits
-Companies with Failed Payments
-User Activity
-Online Users
-Recently Logged In
-Failed Login Attempts
-New Users Today
-Platform Activity Feed
-
-Shows every important activity.
-
-Example
-
-09:15  ABC Realty upgraded to Enterprise
-
-09:20  XYZ Developers added 200 properties
-
-09:30  Company suspended
-
-09:40  Subscription renewed
-
-09:50  Support ticket escalated
-2. Companies
-
-This is one of the biggest modules.
-
-Company List
-
-See
-
-Company Logo
-Company Name
-Subscription
-Status
-Industry
-Branch Count
-Employee Count
-Property Count
-Storage Used
-Created Date
-Renewal Date
-
-Actions
-
-View
-Edit
-Suspend
-Activate
-Archive
-Upgrade Plan
-Contact Company
-Company Profile
-
-General
-
-Logo
-Business Name
-GST
-Registration Number
-Address
-Website
-Contact Details
-
-Statistics
-
-Properties
-Buildings
-Units
-Tenants
-Employees
-Revenue
-Occupancy
-Open Tickets
-3. Organization Explorer
-
-See complete organization.
-
-ABC Realty
-
-↓
-
-Regional Office
-
-↓
-
-Bangalore Branch
-
-↓
-
-Departments
-
-↓
-
-Teams
-
-↓
-
-Employees
-
-Expand and collapse like a file explorer.
-
-4. User Management
-
-See every user.
-
-Columns
-
-Name
+```
 Company
-Branch
-Department
-Role
-Email
-Phone
-Status
-Last Login
-Login Count
+│
+├── Branches / Regions
+│     ├── Departments
+│     ├── Teams
+│     └── Employees
+│
+├── Properties (assigned to branches)
+│
+└── External Parties (Vendors, Contractors, Owners, Tenants)
+```
+
+---
+
+## Roles (16 total)
+
+Roles are flat — not a strict inheritance ladder. Peers (Property Manager, Leasing Agent, Maintenance Tech) have different capability sets, not subsets of one another.
+
+| # | Role | Group | Function |
+|---|------|-------|----------|
+| 1 | Super Admin | Internal | Company-wide configuration, audit access, sub-admin provisioning, global policy and threshold control |
+| 2 | Sub-Admin | Internal | Branch/region management, local user provisioning, expense approval over threshold |
+| 3 | Property Manager | Internal / Field | Manages assigned portfolios, tenant communication, lease and maintenance approval |
+| 4 | Leasing Agent | Internal / Field | Lead pipeline, showings, application processing, listing syndication |
+| 5 | Maintenance Supervisor | Internal / Field | Triages requests, assigns techs and contractors, preventive maintenance scheduling |
+| 6 | Maintenance Tech | Internal / Field | Executes assigned work orders, photo uploads, status updates only |
+| 7 | Compliance Officer | Internal | Fair Housing monitoring, screening audits, lease legal review, trust accounting rules |
+| 8 | Controller / Finance Manager | Internal | Owner distribution approval, GL sign-off, late-fee rules, large vendor payouts |
+| 9 | Bookkeeper | Internal | Rent transactions, bank reconciliation, trust ledger, vendor invoices, owner statements |
+| 10 | HR Manager | Internal | Employee records, attendance, leave management, payroll, recruitment |
+| 11 | Property Owner | External | Portfolio performance, capex approval, distribution statements, read-only access |
+| 12 | Investor | External | Investment performance, distribution reports, no operational access |
+| 13 | Auditor | External | Read-only financials and compliance logs, tax form export, no edit rights |
+| 14 | Vendor Company | External | Job visibility, COI and invoice submission, 1099 receipt, contractor assignment |
+| 15 | Contractor | External | Single-job visibility, completion photos, status updates only |
+| 16 | Tenant | External | Maintenance requests, rent payment, lease documents, move-in/out acknowledgement |
+
+> **Note:** Property Owner and Investor are split. They have different dashboards, different reports, and different permission scopes. Owner has operational visibility (capex, distributions). Investor has financial/performance visibility only.
+
+---
+
+## Module List (14 Modules)
+
+### Module 01 — Organization
+> The foundation layer. Every other module depends on this.
+
+- Company profile and branch/region structure
+- Department and team management
+- Employee records and role assignments
+- Branch-level settings and approval thresholds
+
+---
+
+### Module 02 — Dashboards
+> Every role gets its own dashboard. One shared dashboard is not acceptable.
+
+| Role | Dashboard Focus |
+|------|----------------|
+| Super Admin | Company-wide KPIs, compliance flags, audit activity |
+| Sub-Admin | Branch occupancy, pending approvals, team activity |
+| Property Manager | Portfolio status, open work orders, upcoming lease renewals |
+| Leasing Agent | Active leads, scheduled showings, application pipeline |
+| Maintenance Supervisor | Open work orders, SLA risk, tech availability |
+| Maintenance Tech | Assigned jobs for the day, priority queue |
+| Controller | Trust ledger health, pending distributions, expense approvals |
+| Bookkeeper | Rent collection status, reconciliation queue, overdue payments |
+| Property Owner | NOI, occupancy rate, distribution history |
+| Investor | Portfolio ROI, distribution timeline |
+| Tenant | Rent due, active requests, lease documents |
+
+---
+
+### Module 03 — CRM
+> Separated from Leasing. CRM manages the relationship before a person becomes a tenant.
+
+- Lead capture and pipeline management
+- Prospect tracking and follow-up scheduling
+- Site visit and showing coordination
+- Booking and application handoff to Leasing
+- Communication history per prospect
+
+---
+
+### Module 04 — Property Management
+> The physical asset layer.
+
+- Hierarchical mapping: Complex → Building → Unit → Bed
+- Utility and meter tracking (serial numbers, shutoff locations)
+- Key and fob management (digital log, current holder)
+- Occupancy and vacancy tracking
+- Document vault per property (insurance, deeds, warranties)
+- Preventive maintenance scheduling (appliance lifecycle, HVAC intervals)
+
+---
+
+### Module 05 — Tenant Management
+> Managing the relationship once a person becomes a tenant.
+
+- Tenant profiles and communication history
+- Renters insurance verification and tracking
+- Guarantor and co-signer handling
+- Eviction workflow (notice → filing → court date → judgment)
+- Move-in and move-out acknowledgement
+- Tenant portal access management
+
+---
+
+### Module 06 — Leasing
+> Picks up from CRM after a booking/application is submitted.
+
+- Application processing and status tracking
+- Automated screening (credit, background, eviction checks)
+- E-sign lease generation
+- Rent escalation and renewal automation
+- Lease expiry notice management
+- Move-in inspection with geo-tagged photo proof
+
+---
+
+### Module 07 — Maintenance Operations
+> End-to-end work order management from submission to closure.
+
+- Tenant-submitted maintenance requests with photos
+- Smart dispatch (proximity, trade, technician availability)
+- SLA tracking and escalation tiers (emergency vs. routine)
+- Preventive maintenance scheduling
+- Vendor marketplace (RFP, COI tracking, 1099 issuance)
+- Job completion approval and photo documentation
+- Offline mobile mode for field techs
+
+---
+
+### Module 08 — Finance & Accounting
+> The most compliance-sensitive module. Needs separate legal/compliance review before build.
+
+- Automated rent collection (ACH, credit card, cash)
+- Split-ledger trust accounting for security deposits
+- Late-fee automation based on lease rules
+- NSF and failed-payment handling and retry
+- Owner distributions and statements
+- Vendor invoice processing and expense approval
+- General ledger and bank reconciliation
+- Year-end 1099 generation for vendors and owners
+
+---
+
+### Module 09 — Documents
+> Central document management across all modules.
+
+- Property documents (insurance, deeds, inspection certs)
+- Lease documents (agreements, addenda, renewals)
+- Tenant documents (IDs, screening reports, move-in/out forms)
+- Employee documents (contracts, certifications)
+- Legal documents (eviction filings, compliance records)
+- Vendor documents (COIs, invoices, contracts)
+- Inspection reports and photo archives
+
+---
+
+### Module 10 — Calendar & Tasks
+> Every role schedules work. This is the shared scheduling layer.
 
-Actions
-
-View
-Edit
-Suspend
-Reset Password
-Unlock Account
-Change Role
-5. Subscription Management
-
-See
-
-Every plan
-
-Starter
-
-Professional
-
-Enterprise
-
-Custom
-
-For each plan
-
-Number of Companies
-Monthly Revenue
-Annual Revenue
-Renewal Rate
-Churn Rate
-Active Users
-Feature Usage
-6. Billing
-
-View
-
-Invoices
-
-Payments
-
-Refunds
-
-Pending Payments
-
-Failed Payments
-
-Tax Reports
-
-Revenue Reports
-
-Payment History
-
-7. Platform Analytics
-
-Very powerful dashboard.
-
-Can analyze
-
-Companies
-
-Branches
-
-Properties
-
-Users
-
-Revenue
-
-Growth
-
-Usage
-
-Storage
-
-Activity
-
-Support
-
-Performance
-
-Charts include
-
-Daily Growth
-Monthly Growth
-Revenue
-User Growth
-Company Growth
-Property Growth
-Active Users
-Churn
-Plan Distribution
-8. Security Center
-
-Overview
-
-Failed Logins
-
-Locked Accounts
-
-Suspicious Activity
-
-Blocked IPs
-
-Password Expiry
-
-Inactive Users
-
-Devices
-
-Sessions
-
-Security Alerts
-
-9. Audit Logs
-
-Every action.
-
-Columns
-
-Time
-
-User
-
-Company
-
-Module
-
-Action
-
-Previous Value
-
-New Value
-
-Browser
-
-IP
-
-Device
-
-Status
-
-Filter by
-
-Company
-
-Date
-
-Module
-
-User
-
-10. Support Center
-
-All customer tickets.
-
-Dashboard
-
-Open Tickets
-
-Closed
-
-Escalated
-
-Waiting
-
-Average Response
-
-Satisfaction
-
-Each ticket
-
-Customer
-
-Priority
-
-Assigned
-
-History
-
-Attachments
-
-11. Announcements
-
-Broadcast messages.
-
-Examples
-
-Platform Maintenance
-
-New Features
-
-Holiday Notice
-
-Policy Update
-
-System Downtime
-
-Choose
-
-All Companies
-Selected Companies
-Selected Users
-12. Notification Center
-
-Every notification.
-
-Examples
-
-Subscription expiring
-
-Payment failed
-
-New company registered
-
-Large upload
-
-Storage exceeded
-
-Support escalated
-
-Suspicious login
-
-13. Reports Center
-
-Generate
-
-Revenue Report
-
-Company Report
-
-Growth Report
-
-Property Report
-
-Subscription Report
-
-Usage Report
-
-Security Report
-
-Support Report
-
-Export
-
-PDF
-
-Excel
-
-CSV
-
-14. Company Health
-
-This page doesn't exist in many CRMs—but it should.
-
-Each company gets a health score based on:
-
-Active Users
-Login Frequency
-Subscription Status
-Property Growth
-Occupancy Rate
-Support Volume
-Payment Status
-Feature Adoption
-
-This helps identify companies at risk of churning or needing support.
-
-15. Feature Management
-
-Manage access to platform capabilities.
-
-Examples:
-
-Enable AI features
-Enable maintenance module
-Enable accounting module
-Enable mobile access
-Enable custom branding
-
-These settings can be controlled per subscription plan or company.
-
-16. Storage Management
-
-Monitor:
-
-Company storage usage
-Documents
-Images
-Videos
-Remaining quota
-Large file uploads
-17. Integrations
-
-See connected external services:
-
-Email providers
-SMS providers
-Payment gateways
-Calendar integrations
-Digital signature providers
-
-Monitor connection status and usage.
-
-18. Activity Timeline
-
-A live stream of major platform events:
-
-New companies
-New users
-Subscription upgrades
-Property imports
-Failed payments
-Security alerts
-Support escalations
-19. Settings
-
-Global platform configuration:
-
-Platform branding
-Localization
-Email templates
-Notification templates
-Business policies
-Terms and conditions
-Support information
-20. My Profile
-
-Personal settings:
-
-Profile information
-Notification preferences
-Activity history
-Security settings
-Password
-Sessions
-Super Admin Navigation Structure
-🏠 Dashboard
-
-🏢 Companies
-    ├── Company List
-    ├── Company Details
-    ├── Organization Explorer
-    └── Company Health
-
-👥 Users
-    ├── Users
-    ├── Teams
-    ├── Roles
-    └── Departments
-
-💳 Subscriptions
-    ├── Plans
-    ├── Billing
-    ├── Payments
-    ├── Invoices
-    └── Renewals
-
-📊 Analytics
-    ├── Revenue
-    ├── Growth
-    ├── Usage
-    ├── Adoption
-    └── Reports
-
-🛡 Security
-    ├── Security Center
-    ├── Audit Logs
-    ├── Login Activity
-    └── Sessions
-
-🎫 Support
-    ├── Tickets
-    ├── Announcements
-    └── Notifications
-
-⚙ Platform
-    ├── Feature Management
-    ├── Storage
-    ├── Integrations
-    ├── Settings
-    └── Activity Timeline
-
-👤 Profile
-Architect's Recommendation
-
-For an enterprise SaaS platform, the Super Admin interface should be designed as a business operations command center, not as a traditional admin panel. Every page should answer one of three questions:
-
-What is happening across all customer companies?
-Is the platform healthy, secure, and generating expected business value?
-Is there any action that requires immediate attention?
+- Individual and team calendars per role
+- Task assignment and tracking
+- Reminders and deadline alerts
+- Showing and site visit scheduling
+- Inspection scheduling
+- Maintenance job scheduling
+- Recurring task templates
+
+---
+
+### Module 11 — Notifications
+> Cross-cutting. Almost every module triggers notifications.
+
+| Trigger | Recipient |
+|---------|-----------|
+| Rent due | Tenant |
+| Rent overdue | Bookkeeper, Property Manager |
+| Lease expiring | Tenant, Leasing Agent, Property Manager |
+| Maintenance request submitted | Maintenance Supervisor |
+| Work order assigned | Maintenance Tech / Contractor |
+| Job completed | Maintenance Supervisor, Property Manager |
+| Expense approval pending | Sub-Admin |
+| Distribution approved | Owner |
+| Compliance flag raised | Compliance Officer, Sub-Admin |
+| Inspection scheduled | Tenant, Property Manager |
+
+- Delivery channels: in-app, email, SMS, push (channel not yet decided)
+- Notification preferences per role
+- Notification log and read receipts
+
+---
+
+### Module 12 — Reports
+> Every role generates or consumes reports. Reports are read-only views, not editable.
+
+- Property reports (occupancy, vacancy, turnover)
+- Financial reports (NOI, rent roll, delinquency aging)
+- Maintenance reports (open orders, SLA performance, vendor scores)
+- Lease reports (active leases, expiries, renewals)
+- Employee reports (attendance, task completion)
+- Compliance reports (screening audit, fair housing log)
+- Audit reports (action history, access log)
+- Export rights per role (PDF, CSV)
+
+---
+
+### Module 13 — HR & Administration
+> Internal staff management.
+
+- Employee profiles and role assignments
+- Attendance and leave management
+- Payroll records (not payroll processing — records only unless decided later)
+- Recruitment pipeline
+- Onboarding and offboarding checklists
+- Team and department management
+
+---
+
+### Module 14 — Audit & Compliance
+> Every privileged action in the system is logged here. Immutable.
+
+- Company-wide audit log (append-only, no edit or delete)
+- Before/after state capture on every record change
+- Fair Housing compliance monitoring
+- Trust accounting rule tracking (state-by-state)
+- Screening criteria audit trail
+- Compliance flag workflow (raise → review → resolve)
+- Auditor export tools (read-only, no system access)
+
+---
+
+## Key Design Decisions
+
+**Vendor ≠ Contractor**
+Vendor Company holds the legal/insurance/financial relationship (COI, invoice, 1099). Contractor is the individual dispatched under that company. Separate entities, separate portal access.
+
+**Compliance Officer ≠ Auditor**
+Compliance Officer is proactive — monitors Fair Housing, audits screening criteria, reviews lease language. Auditor is reactive and read-only — reviews records after the fact, exports tax documents, no write access.
+
+**Controller ≠ Bookkeeper**
+Controller has approval authority (distributions, GL sign-off, large payouts). Bookkeeper does transactional work (recording, reconciliation, statement prep). Different permission scope, different dashboards.
+
+**Property Owner ≠ Investor**
+Owner has operational visibility — capex approval, distribution statements, PM communication. Investor has financial/performance visibility only — ROI, portfolio value, distribution history. Separate dashboards, separate reports, separate permission sets.
+
+**CRM is separate from Leasing**
+CRM manages prospects before they become applicants. Leasing picks up when an application is submitted. The handoff point is the booking/application submission.
+
+**Dashboards are role-specific**
+Every role has its own dashboard built around their daily tasks. There is no global one-size dashboard.
+
+**Audit logs are immutable**
+Every privileged action (create, update, delete, approve) generates an append-only log entry with before/after state. No role — including Super Admin — can edit or delete audit entries.
+
+---
+
+## Planning Artifacts Status
+
+| Artifact | Status |
+|----------|--------|
+| Product Vision | ✅ Complete |
+| Role Definitions (16 roles) | ✅ Complete |
+| UML Class Diagram (roles + permissions) | ✅ Complete |
+| ER / Entity Overview Diagrams (master + 5 modules) | ✅ Complete |
+| Individual Role Diagrams (14 files) | ✅ Complete |
+| Application Flow Diagram | ✅ Complete |
+| Super Admin UI/UX Layout | ✅ Complete |
+| Module List (14 modules) | ✅ Complete |
+| Business Rules Document | 🔲 Not started |
+| User Journey Maps (per role) | 🔲 Not started |
+| Screen Inventory (all application pages) | 🔲 Not started |
+| Role Permission Matrix (role × module × action) | 🔲 Not started |
+| Dashboard Specifications (per role) | 🔲 Not started |
+| Report Catalogue | 🔲 Not started |
+| Notification Catalogue | 🔲 Not started |
+| Approval Matrix | 🔲 Not started |
+| Glossary | 🔲 Not started |
+
+---
+
+## Open Items
+
+- Technology stack — deferred until planning is finalized
+- Trust accounting compliance rules per state — needs legal/compliance review before Module 08 is built
+- Payroll processing scope — HR module currently covers records only; payroll processing is undecided
+- Notification delivery channels — in-app/email/SMS/push decision pending
+- Sequence diagrams for key transactions — not yet generated
+
+---
+
+## Glossary (Starter)
+
+| Term | Definition |
+|------|------------|
+| Unit | A single rentable space within a building |
+| Bed | A sub-unit within a shared or multi-bedroom unit |
+| Complex | A group of buildings managed as a single portfolio |
+| Lease | A legally binding agreement between the company and one or more tenants covering a specific unit |
+| Work Order | A logged request for maintenance or repair, submitted by a tenant or staff member |
+| Trust Ledger | A split-ledger accounting record holding tenant security deposits, kept strictly separate from operating funds |
+| Distribution | A payment made to a Property Owner from rental income after expenses |
+| COI | Certificate of Insurance — required from every Vendor Company before work is assigned |
+| 1099 | A year-end tax form issued to vendors and owners for payments made during the tax year |
+| SLA | Service Level Agreement — the maximum time allowed to respond to or resolve a maintenance request by priority level |
+| NOI | Net Operating Income — total rental income minus operating expenses, before debt service |
+
+---
+
+*This document represents the planning state of the Property Management CRM project. It will be updated at each planning milestone before development begins.*
