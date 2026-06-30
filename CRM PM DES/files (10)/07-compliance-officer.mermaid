@@ -1,0 +1,9 @@
+flowchart LR
+    Prev([Sub-Admin]) -- escalates to --> Role([Compliance Officer])
+    Role --> F1[Monitor Fair Housing Compliance]
+    Role --> F2[Audit Screening Criteria]
+    Role --> F3[Review Lease Legal Language]
+    Role --> F4[Track Trust Accounting Rules]
+    Role --> F5[Flag Policy Violations]
+    Role -. audits .-> Next1([Leasing Agent])
+    Role -. audits .-> Next2([Bookkeeper])

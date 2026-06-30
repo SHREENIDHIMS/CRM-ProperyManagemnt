@@ -1,0 +1,9 @@
+flowchart LR
+    Prev([Property Manager]) -- assigns priorities to --> Role([Maintenance Supervisor])
+    Role --> F1[Triage Incoming Requests]
+    Role --> F2[Assign Techs & Contractors]
+    Role --> F3[Manage Preventive Maintenance Schedule]
+    Role --> F4[Approve Job Completion]
+    Role --> F5[Escalate SLA Breaches]
+    Role -- assigns jobs to --> Next1([Maintenance Tech])
+    Role -- assigns jobs to --> Next2([Contractor])

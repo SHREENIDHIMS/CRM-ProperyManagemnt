@@ -1,0 +1,8 @@
+flowchart LR
+    Prev([Sub-Admin]) -- approves thresholds with --> Role([Controller / Finance Manager])
+    Role --> F1[Approve Owner Distributions]
+    Role --> F2[Sign Off General Ledger]
+    Role --> F3[Set Late-Fee Rules]
+    Role --> F4[Approve Large Vendor Payouts]
+    Role --> F5[Review Trust Ledger Health]
+    Role -- oversees --> Next([Bookkeeper])

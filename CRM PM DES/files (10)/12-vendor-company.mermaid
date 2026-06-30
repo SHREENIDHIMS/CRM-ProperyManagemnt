@@ -1,0 +1,8 @@
+flowchart LR
+    Role([Vendor Company])
+    Role --> F1[View Assigned Jobs Only]
+    Role --> F2[Submit Certificate of Insurance]
+    Role --> F3[Submit Invoices]
+    Role --> F4[Receive Year-End 1099]
+    Role --> F5[Assign Contractors]
+    Role -- employs --> Next([Contractor])

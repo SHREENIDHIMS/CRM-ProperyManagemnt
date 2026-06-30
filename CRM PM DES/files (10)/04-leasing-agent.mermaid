@@ -1,0 +1,8 @@
+flowchart LR
+    Prev([Property Manager]) -- manages --> Role([Leasing Agent])
+    Role --> F1[Manage Lead Pipeline]
+    Role --> F2[Schedule Showings]
+    Role --> F3[Process Rental Applications]
+    Role --> F4[Initiate Screening]
+    Role --> F5[Syndicate Listings]
+    Audit([Compliance Officer]) -. audits .-> Role

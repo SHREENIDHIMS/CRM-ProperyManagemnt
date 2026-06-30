@@ -1,0 +1,11 @@
+flowchart LR
+    Prev([Sub-Admin]) -- oversees --> Role([Property Manager])
+    Role --> F1[Manage Assigned Portfolios]
+    Role --> F2[Tenant Communication]
+    Role --> F3[Approve Lease Terms]
+    Role --> F4[Approve Maintenance Under Threshold]
+    Role --> F5[View Masked Financials]
+    Role --> F6[Supervise Property Manager Team]
+    Role -- manages --> Next1([Leasing Agent])
+    Role -- assigns priorities to --> Next2([Maintenance Supervisor])
+    Role -- communicates with --> Next3([Tenant])

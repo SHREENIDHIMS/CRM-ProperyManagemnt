@@ -1,0 +1,10 @@
+flowchart LR
+    Prev([Controller / Finance Manager]) -- oversees --> Role([Bookkeeper])
+    Role --> F1[Record Rent Transactions]
+    Role --> F2[Reconcile Bank Accounts]
+    Role --> F3[Maintain Split Trust Ledger]
+    Role --> F4[Process Vendor Invoices]
+    Role --> F5[Prepare Owner Statements]
+    Role -- prepares statements for --> Next([Owner / Investor])
+    Audit([Auditor]) -. reviews .-> Role
+    Compliance([Compliance Officer]) -. audits .-> Role

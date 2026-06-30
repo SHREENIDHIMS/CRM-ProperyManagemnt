@@ -1,0 +1,7 @@
+flowchart LR
+    Role([Auditor])
+    Role --> F1[View Financial Statements - Read Only]
+    Role --> F2[Export Tax Forms]
+    Role --> F3[View Compliance Logs - Read Only]
+    Role --> F4[No Edit Rights]
+    Role -. reviews .-> Next([Bookkeeper])

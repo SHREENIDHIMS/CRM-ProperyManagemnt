@@ -1,0 +1,8 @@
+flowchart LR
+    Role([Super Admin])
+    Role --> F1[Manage Company-Wide Configuration]
+    Role --> F2[Access Company-Wide Audit Logs]
+    Role --> F3[Create / Manage Sub-Admins]
+    Role --> F4[Set Global Policies & Approval Thresholds]
+    Role --> F5[Top-Level Financial & Compliance Oversight]
+    Role -- provisions --> Next([Sub-Admin])

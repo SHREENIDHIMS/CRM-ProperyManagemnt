@@ -1,0 +1,9 @@
+flowchart LR
+    Prev([Super Admin]) -- provisions --> Role([Sub-Admin])
+    Role --> F1[Manage Branch / Region Settings]
+    Role --> F2[Provision & Suspend Local Users]
+    Role --> F3[Assign Roles Locally]
+    Role --> F4[Approve Large Expenses Over Threshold]
+    Role --> F5[View Regional Reports]
+    Role --> F6[Escalate Compliance Issues]
+    Role -- oversees --> Next([Property Manager])
